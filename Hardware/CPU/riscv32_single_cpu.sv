@@ -12,7 +12,7 @@ module rv32is(
 	output [2:0]    dmemop,
 	output	        dmemwe,
 	output [31:0]   dbgdata
-    );
+);
 
     assign imemclk   = ~clock;
     assign dmemrdclk = clock;

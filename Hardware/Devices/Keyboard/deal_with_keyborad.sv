@@ -13,15 +13,15 @@ module deal_with_keyboard(
     output reg [7:0] screen_en,
     output wire [7:0][3:0] screen_display,
     output reg [7:0] current_key,
-    output wire [7:0] ascii_key,
-    output reg new_key
-    ); 
+    output reg key_down
+); 
+
     reg nextdata_n;
     wire ready;
     wire overflow;
     wire [7:0] keydata;
     reg [7:0] key_count;
-    reg ignore_next;
+    reg [7:0] ignore_next;
     reg pressing;
     reg last_caps;
     
@@ -36,36 +36,39 @@ module deal_with_keyboard(
         .overflow(overflow)
     );
     
-    scancode_to_ascii map({shift_led ^ (caps_led & ~ctrl_led), ctrl_led, current_key}, ascii_key);
     
     assign screen_display[7:6] = key_count;
     assign screen_display[3:2] = current_key;
-    assign screen_display[1:0] = ascii_key;
 
     always @(posedge clk)
     begin
         if(ready == 1'b1 && nextdata_n == 1'b1)
         begin
-            if(keydata == 8'hF0) //break code
+            if(keydata == 8'hF0) // break code
             begin
-                ignore_next <= 1'b1;
-                pressing <= 1'b0; //always clear pressing state
-                current_key <= 8'b0; //clear the key
+                ignore_next <= 8'hF0;
+                pressing <= 1'b0;    // always clear pressing state
+                current_key <= 8'b0; // clear the key
             end
-            else if(keydata == 8'hE0) //special key ignore
+            else if(keydata == 8'hE0) // special key ignore
             begin
-                ignore_next <= 1'b1;
+                ignore_next <= 8'hE0;
             end
-            else if(ignore_next) //after F0 or E0
+            else if(ignore_next == 8'hF0 || ignore_next == 8'hE0) //after F0 or E0
             begin
-                ignore_next <= 1'b0; //ignore, but we will look at the next key
+                ignore_next <= 8'h00; // ignore, but we will look at the next key
+                if(ignore_next == 8'hF0)
+                begin
                 if(keydata == `CTRL)  ctrl_led <= 1'b0;
                 if(keydata == `SHIFT) shift_led <= 1'b0;
+                current_key <= keydata;
+                key_down <= 1'b0;
+                end
+                // E0 is not supported now
             end
             else //normal key
             begin
                 pressing <= 1'b1;
-                new_key <= 1'b1;
                 if(keydata != current_key) // not continous key
                 begin
                     if(keydata == `CAPS)
@@ -77,25 +80,23 @@ module deal_with_keyboard(
                     if(keydata == `SHIFT) shift_led <= 1'b1;
                     key_count <= key_count + 8'd1;
                     current_key <= keydata;
+                    key_down <= 1'b1;
                 end
             end
 
             nextdata_n <= 1'b0;
         end
         else
-            begin nextdata_n <= 1'b1; new_key <= 1'b0; end
-        if(pressing) screen_en <= 8'b11001111; else screen_en <= 8'b11000000;
+            begin nextdata_n <= 1'b1 end
+        if(pressing) screen_en <= 8'b11001100; else screen_en <= 8'b11000000;
         if(clr == 1'b1) //reset
         begin
-            key_count <= 8'h0;
-            current_key <= 8'h0;
+            key_count <= 8'h00;
+            current_key <= 8'h00;
             pressing <= 1'b0;
-            ignore_next <= 1'b0;
-            new_key <= 1'b0;
+            ignore_next <= 8'h00;
             screen_en <= 8'b11000000;
         end
     end
-    
-    
     
 endmodule

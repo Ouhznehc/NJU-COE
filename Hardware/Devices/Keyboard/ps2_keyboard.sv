@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 10/24/2022 04:14:26 PM
-// Design Name: 
-// Module Name: ps2_keyboard
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module ps2_keyboard(clk, clrn, ps2_clk, ps2_data, nextdata_n, data, ready, overflow);
     input clk, clrn, ps2_clk, ps2_data;
