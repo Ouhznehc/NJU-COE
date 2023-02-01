@@ -1,6 +1,12 @@
 module rv32is(
-	input 	        clock,
-	input 	        reset,
+	input   wire        clk,
+	input   wire        rst,
+    input   wire        intr,
+    output  wire        mem_wen,
+    output  wire [2:0]  mem_mode,    
+    inout   wire [31:0] mem_dat
+
+
 	output [31:0]   imemaddr,
 	input  [31:0]   imemdataout,
 	output 	        imemclk,
@@ -11,15 +17,8 @@ module rv32is(
 	output	        dmemwrclk,
 	output [2:0]    dmemop,
 	output	        dmemwe,
-	output [31:0]   dbgdata
 );
 
-    assign imemclk   = ~clock;
-    assign dmemrdclk = clock;
-    assign dmemwrclk = ~clock;
-
-    wire clk = clock;
-    wire rst = reset;
     wire [31:0] instr, data_read;
     assign instr = imemdataout;
     assign data_read = dmemdataout;
@@ -33,7 +32,6 @@ module rv32is(
     wire [2:0] MemOp;
     assign dmemop = MemOp;
     reg [31:0] pc = 32'b0;
-    assign dbgdata = pc;
 
     reg [31:0] next_pc = 0;
     wire [4:0]  rs1, rs2, rd;

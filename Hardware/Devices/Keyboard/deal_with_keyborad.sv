@@ -57,14 +57,13 @@ module deal_with_keyboard(
             else if(ignore_next == 8'hF0 || ignore_next == 8'hE0) //after F0 or E0
             begin
                 ignore_next <= 8'h00; // ignore, but we will look at the next key
-                if(ignore_next == 8'hF0)
+                if(ignore_next == 8'hF0) // E0 is not supported now
                 begin
                 if(keydata == `CTRL)  ctrl_led <= 1'b0;
                 if(keydata == `SHIFT) shift_led <= 1'b0;
                 current_key <= keydata;
                 key_down <= 1'b0;
                 end
-                // E0 is not supported now
             end
             else //normal key
             begin
