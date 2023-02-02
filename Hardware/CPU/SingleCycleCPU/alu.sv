@@ -5,8 +5,7 @@ module alu(
 	output  reg             less,
 	output  reg             zero,
 	output  reg     [31:0]  aluresult
-    );
-//add your code here
+);
     reg [31:0] reverse;
     reg [31:0] temp;
     reg carry;

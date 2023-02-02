@@ -6,8 +6,6 @@ module pc_generator(
     input   wire    [31:0]    imm,
     output  wire    [31:0]    next_pc
 );
-
-    
     wire [31:0] pc_source = PCBsrc ? Ra : pc;
     wire [31:0] pc_offset = PCAsrc ? imm : 4;
 

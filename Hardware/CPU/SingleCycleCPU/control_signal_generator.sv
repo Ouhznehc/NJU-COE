@@ -12,21 +12,18 @@ module control_signal_generator (
     output wire [4:0]  rs1,
     output wire [4:0]  rs2,
     output wire [4:0]  rd
-);
-// ======== Decode ======
+    );
     wire [6:0] op    = instr[6:0];
     assign     rs1   = instr[19:15];
     assign     rs2   = instr[24:20];
     assign     rd    = instr[11:7];
     wire [2:0] func3 = instr[14:12];
-    wire [6:0] func7 = instr[31:25];
-// ======================    
+    wire [6:0] func7 = instr[31:25];    
     
     reg [18:0] control_signal;
     assign {ExtOp, RegWr, Branch, MemtoReg, MemWr, MemOp, ALUAsrc, ALUBsrc, ALUctr} = control_signal;
 
-    always @(*)
-    begin
+    always @(*) begin
         casex ({op[6:2], func3, func7[5]})
         /* lui   */    9'b01101_xxx_x: control_signal = 19'b001_1_000_0_0_000_0_01_0011;
         /* auipc */    9'b00101_xxx_x: control_signal = 19'b001_1_000_0_0_000_1_01_0000;
@@ -67,7 +64,6 @@ module control_signal_generator (
         /* sb    */    9'b01000_000_x: control_signal = 19'b010_0_000_0_1_000_0_01_0000;
         /* sh    */    9'b01000_001_x: control_signal = 19'b010_0_000_0_1_001_0_01_0000;
         /* sw    */    9'b01000_010_x: control_signal = 19'b010_0_000_0_1_010_0_01_0000;
-        endcase
+        endcase 
     end
-
 endmodule
