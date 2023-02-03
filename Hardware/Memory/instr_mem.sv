@@ -5,10 +5,10 @@ module instr_mem (
 );
     parameter instr_size = 1000;
     reg [31:0] instr_mem [instr_size:0];
-    initial 
-    begin
-        $readmemh("", instr_mem);
-    end
+    // initial 
+    // begin
+    //     $readmemh("", instr_mem);
+    // end
     always @(negedge clock)
         instr <= instr_mem[addr];
 endmodule

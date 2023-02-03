@@ -1,5 +1,5 @@
 module cpu(
-	input   wire                colck,
+	input   wire                clock,
 	input   wire    [31:0]      instr,
 	output  wire    [31:0]      data_addr,
 	input   wire    [31:0]      data_read,
