@@ -2,7 +2,7 @@
 `define SHIFT 8'h12
 `define CAPS  8'h58
 
-module deal_with_keyboard(
+module keyboard(
     input ps2_clk,
     input ps2_data,
     input clk,
@@ -14,9 +14,7 @@ module deal_with_keyboard(
     wire ready;
     wire overflow;
     wire [7:0] keydata;
-    reg [7:0] key_count;
     reg [7:0] ignore_next;
-    reg last_caps;
     
     ps2_keyboard ps(
         .clk(clk),

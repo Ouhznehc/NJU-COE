@@ -1,3 +1,4 @@
+// Device map
 `define CODE      12'h000
 `define DATA      12'h001
 `define VGA_INFO  12'h002
@@ -10,3 +11,9 @@
 `define CLK_MS    12'h009
 `define CLK_US    12'h00a
 `define SW        12'h00b   // [15:0]
+`define ERROR     12'h00c
+
+//errno
+`define INVALID_READ    32'd1
+`define INVALID_WRITE   32'd2
+
