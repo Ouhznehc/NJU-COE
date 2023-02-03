@@ -1,6 +1,3 @@
-`define CTRL  8'h14
-`define SHIFT 8'h12
-`define CAPS  8'h58
 
 module keyboard(
     input ps2_clk,
@@ -18,7 +15,7 @@ module keyboard(
     
     ps2_keyboard ps(
         .clk(clk),
-        .clrn(clr),
+        .clrn(1'b0),
         .ps2_clk(ps2_clk),
         .ps2_data(ps2_data),
         .nextdata_n(nextdata_n),

@@ -1,4 +1,4 @@
-module data_memory(
+module data_mem(
 	input  [31:0] addr,
 	output reg [31:0] dataout,
 	input  [31:0] datain,

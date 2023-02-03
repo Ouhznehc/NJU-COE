@@ -1,4 +1,11 @@
-`include "Common/commom.svh"
+`include "Common/common.svh"
+`include "CPU/SingleCycleCPU/cpu.sv"
+`include "Devices/Hex7seg/hex7seg.sv"
+`include "Devices/Keyboard/keyboard.sv"
+`include "Devices/Timer/clkgen.sv"
+`include "Memory/data_mem.sv"
+`include "Memory/instr_mem.sv"
+
 
 module Top(
 //============= CLK ============
@@ -32,8 +39,8 @@ begin
     case(MemType)
         `DATA:      data = data_read;
         `VGA_LINE:  data = vga_line;
-        `KEY_CODE:  data = {24'b0, key_code};
-        `KEY_DOWN:  data = {31'b0, key_down};
+        `KBD_CODE:  data = {24'b0, key_code};
+        `KBD_DOWN:  data = {31'b0, key_down};
         `LED:       data = {16'b0, LED};
         `HEX:       data = Hex7Seg;
         `CLK_S:     data = clk_s;
@@ -60,6 +67,8 @@ begin
 end
 
 //! clkgen
+wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
+
 clkgen #(10000)    clkgen_10KHZ(.clkin(CLK100MHZ), .clkout(CLK10KHZ));
 clkgen #(50000000) clkgen_50MHZ(.clkin(CLK100MHZ), .clkout(CLK50MHZ));
 clkgen #(10000000) clkgen_10MHZ(.clkin(CLK100MHZ), .clkout(CLK10MHZ));
@@ -69,6 +78,11 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
+wire [31:0] instr, data_addr, data_write, next_pc;
+reg  [31:0] data;
+wire [2:0]  MemOp;
+wire MemWe;
+
 cpu my_cpu( 
     .clock(CLK50MHZ),
     .instr(instr),
@@ -88,6 +102,7 @@ instr_mem my_imem(
 );
 
 //! data mem
+wire [31:0] data_read;
 data_mem my_dmem(
     .addr(data_addr),
     .dataout(data_read),

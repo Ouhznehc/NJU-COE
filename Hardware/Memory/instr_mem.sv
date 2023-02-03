@@ -1,4 +1,4 @@
-module instr_memory (
+module instr_mem (
     input  wire clock,
     input  wire [31:0] addr,
     output reg [31:0] instr
