@@ -30,10 +30,25 @@ module Top(
 
 
 //imemclk=~clock dmemrdclk = clock dmemwrclk = ~clock;
-
+//---------- declarations-------------
 wire [11:0] MemType;
-assign MemType = data_addr[31:20];
+wire [7:0] key_code;
+wire key_down;
+wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
+wire [31:0] instr, data_addr, data_write, data_read, next_pc;
+reg [31:0] clk_s, clk_ms, clk_us;
+reg [7:0][3:0] Hex7Seg;
+reg  [31:0] data;
+wire [2:0]  MemOp;
+wire MemWe;
+reg [31:0] errno = 32'b0;
+reg [31:0] vga_line;
+reg [7:0] vga_info [4095:0];
+
+
+
 //! data read
+assign MemType = data_addr[31:20];
 always @(*)
 begin
     case(MemType)
@@ -67,8 +82,6 @@ begin
 end
 
 //! clkgen
-wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
-
 clkgen #(10000)    clkgen_10KHZ(.clkin(CLK100MHZ), .clkout(CLK10KHZ));
 clkgen #(50000000) clkgen_50MHZ(.clkin(CLK100MHZ), .clkout(CLK50MHZ));
 clkgen #(10000000) clkgen_10MHZ(.clkin(CLK100MHZ), .clkout(CLK10MHZ));
@@ -78,11 +91,6 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
-wire [31:0] instr, data_addr, data_write, next_pc;
-reg  [31:0] data;
-wire [2:0]  MemOp;
-wire MemWe;
-
 cpu my_cpu( 
     .clock(CLK50MHZ),
     .instr(instr),
@@ -102,7 +110,6 @@ instr_mem my_imem(
 );
 
 //! data mem
-wire [31:0] data_read;
 data_mem my_dmem(
     .addr(data_addr),
     .dataout(data_read),
@@ -114,7 +121,6 @@ data_mem my_dmem(
 );
 
 //! hex7seg and led
-wire [7:0][3:0] Hex7Seg;
 hex7seg screen(
         .clk(CLK10KHZ),
         .clr(1'b0),
@@ -126,17 +132,11 @@ hex7seg screen(
     );
 
 //! clock 
-reg [31:0] clk_s, clk_ms, clk_us;
 always @(posedge CLK1HZ) clk_s <= clk_s + 1;
 always @(posedge CLK1KHZ) clk_ms <= clk_ms + 1;
 always @(posedge CLK1MHZ) clk_us <= clk_us + 1;
 
-//! error
-reg [31:0] errno = 32'b0;
-
 //! keyboard
-wire [7:0] key_code;
-wire key_down;
 keyboard my_keyborad(
     .ps2_clk(PS2_CLK),
     .ps2_data(PS2_DATA),
@@ -146,8 +146,7 @@ keyboard my_keyborad(
 );
 
 //! vga
-reg [31:0] vga_line;
-reg [7:0] vga_info [4095:0];
+
 
 endmodule
 
