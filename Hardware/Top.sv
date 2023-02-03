@@ -1,3 +1,5 @@
+`include "Common/commom.svh"
+
 module Top(
 //============= CLK ============
     input   wire                CLK100MHZ,
@@ -132,7 +134,7 @@ keyboard my_keyborad(
 reg [31:0] vga_line;
 reg [7:0] vga_info [4095:0];
 
-
+endmodule
 
 
 

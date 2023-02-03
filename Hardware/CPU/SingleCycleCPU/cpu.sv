@@ -1,7 +1,7 @@
 module cpu(
 	input   wire                colck,
 	input   wire    [31:0]      instr,
-	output  wire                data_addr,
+	output  wire    [31:0]      data_addr,
 	input   wire    [31:0]      data_read,
 	output  wire    [31:0]      data_write,
 	output  wire    [2:0]       MemOp,
