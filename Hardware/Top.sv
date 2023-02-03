@@ -64,12 +64,11 @@ data_mem my_dmem(
 );
 
 // hex7seg
-wire [7:0] screen_en;
 wire [7:0][3:0] screen_display;
 hex7seg screen(
         .clk(CLK10KHZ),
         .clr(1'b0),
-        .en(screen_en),
+        .en(8'b11111111),
         .display(screen_display),
         .dots(8'b0),
         .AN(AN),
