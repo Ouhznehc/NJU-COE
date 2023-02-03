@@ -1,5 +1,5 @@
 module instr_memory (
-    input  wire clk,
+    input  wire clock,
     input  wire [31:0] addr,
     output reg [31:0] instr
 );
@@ -9,6 +9,6 @@ module instr_memory (
     begin
         $readmemh("", instr_mem);
     end
-    always @(negedge clk)
+    always @(negedge clock)
         instr <= instr_mem[addr];
 endmodule

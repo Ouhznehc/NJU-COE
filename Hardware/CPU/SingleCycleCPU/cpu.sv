@@ -1,18 +1,15 @@
-module rv32is(
+module cpu(
 	input   wire                colck,
-	input   wire                reset,
-	output  reg     [31:0]      next_pc,
 	input   wire    [31:0]      instr,
 	output  wire                data_addr,
 	input   wire    [31:0]      data_read,
 	output  wire    [31:0]      data_write,
 	output  wire    [2:0]       MemOp,
 	output	wire                MemWe,
+    output  wire    [31:0]      next_pc
 );
 
     reg [31:0] pc = 32'b0;
-    wire [31:0] next_pc;
-
     wire [4:0]  rs1, rs2, rd;
     wire [31:0] Ra, Rb, imm;
     wire        PCAsrc, PCBsrc;
@@ -36,14 +33,6 @@ module rv32is(
             2'b10: datab = 4;
             2'b00: datab = Rb;
         endcase
-
-    wire [31:0] pc_source = PCBsrc ? Ra : pc;
-    wire [31:0] pc_offset = PCAsrc ? imm : 4;
-    always @(*)
-    begin
-        if(rst) begin pc <= 0; next_pc <= 0; end
-        next_pc = pc_source + pc_offset;
-    end
 
     pc_generator PG(
         .pc(pc),

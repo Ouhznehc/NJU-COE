@@ -30,7 +30,7 @@ module seg7(
     assign target = {~dot, body};
 endmodule
 
-module digital_screen(
+module hex7seg(
     input wire clk,
     input wire clr,
     input wire [7:0] en,
