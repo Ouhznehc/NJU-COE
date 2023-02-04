@@ -11,7 +11,7 @@ module instr_mem (
     begin
         $readmemh("C:/Users/24421/Desktop/lab12/only_led/software/main.txt", instr_mem, 0, 1000);
     end
-    always @(negedge clock)
+    always @(posedge clock)
         instr <= instr_mem[addr];
 endmodule
 

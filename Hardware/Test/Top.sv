@@ -131,7 +131,7 @@ cpu my_cpu(
 //! instr mem
 instr_mem my_imem(
     .addr(instr_addr),
-    .clock(~CLK50MHZ),
+    .clock(imemclk),
     .instr(instr)
 );
 
@@ -140,8 +140,8 @@ data_mem my_dmem(
     .addr(data_addr),
     .dataout(data_read),
     .datain(data_write),
-    .rdclk(CLK50MHZ),
-    .wrclk(~CLK50MHZ),
+    .rdclk(dmemrdclk),
+    .wrclk(dmemwrclk),
     .memop(MemOp),
     .we(MemType == `DATA && MemWe)
 );
