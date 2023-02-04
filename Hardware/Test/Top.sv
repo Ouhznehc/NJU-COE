@@ -39,6 +39,9 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 assign  LED = next_pc[15:0]; 
+assign  AN  = data_addr[7:0];
+assign HEX  = data_write[7:0];
+
 //! cpu
 cpu my_cpu( 
     .clock(CLK50MHZ),

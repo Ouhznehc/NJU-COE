@@ -6,8 +6,13 @@ module instr_mem (
     input  wire [31:0] addr,
     output reg [31:0] instr
 );
-    parameter instr_size = 1000;
-    reg [31:0] instr_mem [instr_size:0];
+    reg [31:0] instr_mem [1000:0];
+    initial
+    begin
+        integer i;
+        for(i = 0; i <= 1000; i = i + 1)
+            instr_mem[i] = 32'b0; 
+    end
     // initial 
     // begin
     //     $readmemh("", instr_mem);
