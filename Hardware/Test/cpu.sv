@@ -11,16 +11,18 @@
 
 module cpu(
 	input   wire                clock,
+    input   wire                reset,
 	input   wire    [31:0]      instr,
 	output  wire    [31:0]      data_addr,
 	input   wire    [31:0]      data_read,
 	output  wire    [31:0]      data_write,
 	output  wire    [2:0]       MemOp,
 	output	wire                MemWe,
-    output  wire    [31:0]      next_pc
+    output  wire    [31:0]      instr_addr
 );
 
     reg [31:0] pc = 32'b0;
+    reg [31:0] next_pc = 32'b0;
     wire [4:0]  rs1, rs2, rd;
     wire [31:0] Ra, Rb, imm;
     wire        PCAsrc, PCBsrc;
@@ -33,6 +35,7 @@ module cpu(
     reg  [31:0] datab;
     wire less, zero;
  
+    assign instr_addr = next_pc;
     assign data_write = Rb;
     assign data_addr  = aluresult;
 
@@ -46,14 +49,13 @@ module cpu(
             default: begin end
         endcase
 
-    pc_generator PG(
-        .pc(pc),
-        .PCBsrc(PCBsrc),
-        .PCAsrc(PCAsrc),
-        .Ra(Ra),
-        .imm(imm),
-        .next_pc(next_pc)
-    );
+    wire [31:0] pc_source = PCBsrc ? Ra : pc;
+    wire [31:0] pc_offset = PCAsrc ? imm : 4;
+    always @(*)
+    begin
+        if(reset) begin pc <= 0; next_pc <= 0; end
+        next_pc = pc_source + pc_offset;
+    end
 
     control_signal_generator CSG(
         .instr(instr),

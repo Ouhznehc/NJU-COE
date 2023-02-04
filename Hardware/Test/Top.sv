@@ -1,10 +1,10 @@
 `include "../Common/common.svh"
-`include "../CPU/SingleCycleCPU/cpu.sv"
-`include "../Devices/Hex7seg/hex7seg.sv"
-`include "../Devices/Keyboard/keyboard.sv"
-`include "../Devices/Timer/clkgen.sv"
-`include "../Memory/data_mem.sv"
-`include "../Memory/instr_mem.sv"
+`include "cpu.sv"
+`include "hex7seg.sv"
+`include "keyboard.sv"
+`include "clkgen.sv"
+`include "data_mem.sv"
+`include "instr_mem.sv"
 module Top(
 //============= CLK ============
     input   wire                CLK100MHZ,
@@ -33,7 +33,7 @@ module Top(
 (*KEEP = "TRUE"*) wire [7:0] key_code;
 (*KEEP = "TRUE"*) wire key_down;
 (*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
-(*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, next_pc;
+(*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, instr_addr;
 (*KEEP = "TRUE"*) reg [31:0] clk_s, clk_ms, clk_us;
 (*KEEP = "TRUE"*) reg [7:0][3:0] Hex7Seg;
 (*KEEP = "TRUE"*) reg  [31:0] data;
@@ -42,6 +42,7 @@ module Top(
 (*KEEP = "TRUE"*) reg [31:0] errno = 32'b0;
 (*KEEP = "TRUE"*) reg [31:0] vga_line;
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
+(*KEEP = "TRUE"*) reg reset, initialed;
 
 
 
@@ -91,21 +92,33 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
 always @(*)
-    LED = next_pc[15:0];
+    LED = instr_addr[15:0];
+initial begin
+	reset = 1'b1;
+	initialed = 1'b0;
+end
+always @(negedge CLK50MHZ) begin
+	initialed <= 1'b1;
+end
+always @(posedge CLK50MHZ) begin
+	if(initialed) reset <= 1'b0;
+end
+
 cpu my_cpu( 
     .clock(CLK50MHZ),
+    .reset(reset),
     .instr(instr),
     .data_addr(data_addr),
     .data_read(data),
     .data_write(data_write),
     .MemOp(MemOp),
     .MemWe(MemWe),
-    .next_pc(next_pc)
+    .instr_addr(instr_addr)
 );
 
 //! instr mem
 instr_mem my_imem(
-    .addr(next_pc),
+    .addr(instr_addr),
     .clock(~CLK50MHZ),
     .instr(instr)
 );
