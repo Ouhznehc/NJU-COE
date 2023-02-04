@@ -23,11 +23,11 @@ module Top(
     output  wire    [7:0]       AN,
     output  wire    [7:0]       HEX
 );
-wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
-wire [31:0] instr, data_addr, data_write, data_read, next_pc;
-reg  [31:0] data;
-wire [2:0]  MemOp;
-wire MemWe;
+(*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
+(*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, next_pc;
+(*KEEP = "TRUE"*) reg  [31:0] data;
+(*KEEP = "TRUE"*) wire [2:0]  MemOp;
+(*KEEP = "TRUE"*) wire MemWe;
 
 //! clkgen
 clkgen #(10000)    clkgen_10KHZ(.clkin(CLK100MHZ), .clkout(CLK10KHZ));
