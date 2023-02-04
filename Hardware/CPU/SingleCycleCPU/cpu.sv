@@ -17,7 +17,7 @@ module cpu(
 	output  wire    [31:0]      data_write,
 	output  wire    [2:0]       MemOp,
 	output	wire                MemWe,
-    output  wire    [31:0]      next_pc
+    output  wire    [31:0]      next_pc  
 );
 
     reg [31:0] pc = 32'b0;

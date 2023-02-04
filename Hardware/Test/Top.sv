@@ -44,6 +44,8 @@ module Top(
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
 (*KEEP = "TRUE"*) wire [31:0] pc;
+(*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk;
+
 
 
 
@@ -92,13 +94,12 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
-wire clk;
 debounce button(CLK100MHZ, SW[0], clk);
 
 always @(*)
 begin
-    Hex7Seg = pc;
-    LED = instr_addr[15:0];
+    Hex7Seg[3:0] = pc[15:0];
+    Hex7Seg[7:4] = instr_addr[15:0];
 end
 initial begin
 	reset = 1'b1;
@@ -114,13 +115,16 @@ end
 cpu my_cpu( 
     .clock(clk),
     .reset(reset),
-    .instr(instr),
-    .data_addr(data_addr),
-    .data_read(data),
-    .data_write(data_write),
-    .MemOp(MemOp),
-    .MemWe(MemWe),
-    .instr_addr(instr_addr),
+    .imemaddr(instr_addr),
+    .imemdataout(instr),
+    .imemclk(imemclk),
+    .dmemaddr(data_addr),
+    .dmemdataout(data),
+    .dmemdatain(data_write),
+    .dmemrdclk(dmemrdclk),
+    .dmemwrclk(dmemwrclk),
+    .dmemop(MemOp),
+    .dmemwe(MemWe),
     .dbgdata(pc)
 );
 
