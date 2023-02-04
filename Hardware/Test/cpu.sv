@@ -55,8 +55,8 @@ module cpu(
     wire [31:0] pc_offset = PCAsrc ? imm : 4;
     always @(*)
     begin
-        if(reset) begin next_pc <= 0; end
-        next_pc = pc_source + pc_offset;
+        if(reset) next_pc <= 0;
+        else next_pc <= pc_source + pc_offset;
     end
 
     control_signal_generator CSG(

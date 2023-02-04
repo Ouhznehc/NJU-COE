@@ -96,7 +96,10 @@ wire clk;
 debounce button(CLK100MHZ, SW[0], clk);
 
 always @(*)
+begin
     Hex7Seg = pc;
+    LED = instr_addr[15:0];
+end
 initial begin
 	reset = 1'b1;
 	initialed = 1'b0;
@@ -136,7 +139,7 @@ data_mem my_dmem(
     .rdclk(CLK50MHZ),
     .wrclk(~CLK50MHZ),
     .memop(MemOp),
-    .we(MemType == `DATA && MemOp)
+    .we(MemType == `DATA && MemWe)
 );
 
 //! hex7seg and led
