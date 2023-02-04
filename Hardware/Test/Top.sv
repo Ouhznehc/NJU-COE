@@ -43,7 +43,7 @@ module Top(
 (*KEEP = "TRUE"*) reg [31:0] vga_line;
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
-(*KEEP = "TRUE"*) wire pc;
+(*KEEP = "TRUE"*) wire [31:0] pc;
 
 
 
@@ -74,8 +74,8 @@ begin
         case(MemType)
             `VGA_INFO:  vga_info[data_addr[11:0]] = data_write;
             `VGA_LINE:  vga_line = data_write;
-            //`LED:       LED = data_write[15:0];
-            `HEX:       Hex7Seg = data_write;
+            `LED:       LED = data_write[15:0];
+            //`HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
             default: begin end //   errno = `INVALID_WRITE;
         endcase
@@ -93,7 +93,7 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
 always @(*)
-    LED = instr_addr[15:0];
+    Hex7Seg = pc;
 initial begin
 	reset = 1'b1;
 	initialed = 1'b0;

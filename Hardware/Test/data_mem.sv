@@ -18,7 +18,7 @@ module data_mem(
     reg [31:0] mem [1000:0];
     initial 
     begin
-        $readmemh("C:/Users/24421/Desktop/lab12/only_hex/software/main_d.txt", mem, 0, 1000);
+        $readmemh("C:/Users/24421/Desktop/lab12/only_led/software/main_d.txt", mem, 0, 1000);
     end
     assign unit = addr / 4;
     assign offset = addr % 4;

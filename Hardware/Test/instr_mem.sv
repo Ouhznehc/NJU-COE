@@ -9,7 +9,7 @@ module instr_mem (
     reg [31:0] instr_mem [1000:0];
     initial 
     begin
-        $readmemh("C:/Users/24421/Desktop/lab12/only_hex/software/main.txt", instr_mem, 0, 1000);
+        $readmemh("C:/Users/24421/Desktop/lab12/only_led/software/main.txt", instr_mem, 0, 1000);
     end
     always @(negedge clock)
         instr <= instr_mem[addr];
