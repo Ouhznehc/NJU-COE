@@ -1,3 +1,6 @@
+`ifndef INSTR_MEM
+`define INSTR_MEM
+
 module instr_mem (
     input  wire clock,
     input  wire [31:0] addr,
@@ -12,3 +15,5 @@ module instr_mem (
     always @(negedge clock)
         instr <= instr_mem[addr];
 endmodule
+
+`endif

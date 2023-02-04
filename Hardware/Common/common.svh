@@ -1,4 +1,7 @@
 // Device map
+`ifndef COMMON_SVH
+`define COMMON_SVH
+
 `define CODE      12'h000
 `define DATA      12'h001
 `define VGA_INFO  12'h002
@@ -17,3 +20,4 @@
 `define INVALID_READ    32'd1
 `define INVALID_WRITE   32'd2
 
+`endif

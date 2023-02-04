@@ -1,3 +1,6 @@
+`ifndef PC_GEN_SV
+`define PC_GEN_SV
+
 module pc_generator(
     input   wire    [31:0]    pc,
     input   wire              PCBsrc,
@@ -12,3 +15,5 @@ module pc_generator(
     assign next_pc = pc_source + pc_offset;
 
 endmodule
+
+`endif

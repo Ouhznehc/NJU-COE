@@ -1,3 +1,6 @@
+`ifndef ALU_SV
+`define ALU_SV
+
 module alu(
 	input   wire    [31:0]  dataa,
 	input   wire    [31:0]  datab,
@@ -93,6 +96,9 @@ module alu(
                 aluresult = dataa & datab;
                 zero = (!aluresult);
             end
+        default:begin end
         endcase 
     end
 endmodule
+
+`endif

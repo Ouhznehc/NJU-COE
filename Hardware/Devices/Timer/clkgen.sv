@@ -1,3 +1,7 @@
+`ifndef CLKGEN_SV
+`define CLKGEN_SV
+
+
 module clkgen(
     input wire clkin,
     output reg clkout
@@ -17,3 +21,5 @@ module clkgen(
     end
 
 endmodule
+
+`endif

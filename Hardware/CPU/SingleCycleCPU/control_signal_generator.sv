@@ -1,3 +1,6 @@
+`ifndef CONTROL_SIGNAL_GEN_SV
+`define CONTROL_SIGNAL_GEN_SV
+
 module control_signal_generator (
     input  wire [31:0] instr,
     output wire [2:0]  ExtOp,
@@ -64,6 +67,9 @@ module control_signal_generator (
         /* sb    */    9'b01000_000_x: control_signal = 19'b010_0_000_0_1_000_0_01_0000;
         /* sh    */    9'b01000_001_x: control_signal = 19'b010_0_000_0_1_001_0_01_0000;
         /* sw    */    9'b01000_010_x: control_signal = 19'b010_0_000_0_1_010_0_01_0000;
+                       default: begin end
         endcase 
     end
 endmodule
+
+`endif

@@ -1,3 +1,6 @@
+`ifndef IMM_GEN_SV
+`define IMM_GEN_SV
+
 module imm_generator (
     input  wire [31:0] instr,
     input  wire [2:0]  ExtOp,
@@ -10,5 +13,8 @@ module imm_generator (
         3'b010: imm = {{20{instr[31]}}, instr[31:25], instr[11:7]};                    //S
         3'b011: imm = {{20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0};    //B
         3'b100: imm = {{12{instr[31]}}, instr[19:12], instr[20], instr[30:21], 1'b0};  //J
+        default:imm = 32'b0;
     endcase    
 endmodule
+
+`endif

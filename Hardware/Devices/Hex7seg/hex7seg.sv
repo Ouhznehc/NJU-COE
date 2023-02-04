@@ -1,3 +1,6 @@
+`ifndef HEX_SEG_SV
+`define HEX_SEG_SV
+
 module seg7(
     input wire [3:0] N,
     input wire dot,
@@ -67,3 +70,5 @@ module hex7seg(
     end
 
 endmodule
+
+`endif

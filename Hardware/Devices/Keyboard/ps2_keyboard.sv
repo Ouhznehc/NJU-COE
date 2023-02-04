@@ -1,4 +1,5 @@
-`timescale 1ns / 1ps
+`ifndef PS2_KEYBOARD_SV
+`define PS2_KEYBOARD_SV
 
 module ps2_keyboard(clk, clrn, ps2_clk, ps2_data, nextdata_n, data, ready, overflow);
     input clk, clrn, ps2_clk, ps2_data;
@@ -58,3 +59,5 @@ module ps2_keyboard(clk, clrn, ps2_clk, ps2_data, nextdata_n, data, ready, overf
     end
     assign data = fifo[r_ptr]; //always set output data
 endmodule
+
+`endif

@@ -1,3 +1,6 @@
+`ifndef REG_HEAP_SV
+`define REG_HEAP_SV
+
 module register_heap (
     input  wire        WrClk,
     input  wire [4:0]  Ra,
@@ -21,3 +24,5 @@ module register_heap (
             regs[Rw] = busW;
     end    
 endmodule
+
+`endif

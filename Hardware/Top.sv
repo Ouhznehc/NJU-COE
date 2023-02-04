@@ -23,7 +23,7 @@ module Top(
 //============= PS2 ===========
     input   wire                PS2_CLK,
     input   wire                PS2_DATA,
-//============= bcdseg7 ========
+//============= hex7seg ========
     output  wire    [7:0]       AN,
     output  wire    [7:0]       HEX
 );
@@ -56,12 +56,12 @@ begin
         `VGA_LINE:  data = vga_line;
         `KBD_CODE:  data = {24'b0, key_code};
         `KBD_DOWN:  data = {31'b0, key_down};
-        `LED:       data = {16'b0, LED};
         `HEX:       data = Hex7Seg;
         `CLK_S:     data = clk_s;
         `CLK_MS:    data = clk_ms;
         `CLK_US:    data = clk_us;
         `SW:        data = {16'b0, SW};
+        `ERROR:     data = errno;
         default:    errno = `INVALID_READ;
     endcase
 end
@@ -76,6 +76,7 @@ begin
             `VGA_LINE:  vga_line = data_write;
             `LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
+            `ERROR:     errno = data_write;
             default:    errno = `INVALID_WRITE;
         endcase
     end

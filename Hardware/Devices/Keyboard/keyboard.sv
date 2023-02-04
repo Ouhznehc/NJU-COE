@@ -1,3 +1,7 @@
+`ifndef KEYBOARD_SV
+`define KEYBOARD_SV
+
+`include "ps2_keyboard.sv"
 
 module keyboard(
     input ps2_clk,
@@ -62,3 +66,5 @@ module keyboard(
     end
     
 endmodule
+
+`endif

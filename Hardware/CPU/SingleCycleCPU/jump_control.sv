@@ -1,3 +1,7 @@
+`ifndef JUMP_CONTROL_SV
+`define JUMP_CONTROL_SV
+
+
 module jump_control(
     input   wire    [2:0]   branch,
     input   wire            zero,
@@ -22,5 +26,8 @@ module jump_control(
             5'b110_x_1: pc_select = 2'b01;
             5'b111_x_0: pc_select = 2'b01;
             5'b111_x_1: pc_select = 2'b00;
+            default:begin end
         endcase
 endmodule
+
+`endif

@@ -1,3 +1,7 @@
+`ifndef DATA_MEM_SV
+`define DATA_MEM_SV
+
+
 module data_mem(
 	input  [31:0] addr,
 	output reg [31:0] dataout,
@@ -99,3 +103,5 @@ module data_mem(
         end
     end
 endmodule
+
+`endif
