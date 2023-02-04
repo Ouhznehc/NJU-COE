@@ -1,6 +1,10 @@
 `include "../Common/common.svh"
-
-
+`include "../CPU/SingleCycleCPU/cpu.sv"
+`include "../Devices/Hex7seg/hex7seg.sv"
+`include "../Devices/Keyboard/keyboard.sv"
+`include "../Devices/Timer/clkgen.sv"
+`include "../Memory/data_mem.sv"
+`include "../Memory/instr_mem.sv"
 module Top(
 //============= CLK ============
     input   wire                CLK100MHZ,
@@ -43,7 +47,7 @@ module Top(
 
 //! data read
 assign MemType = data_addr[31:20];
-always @(*)
+always @(posedge CLK50MHZ)
 begin
     case(MemType)
         `DATA:      data = data_read;
@@ -55,8 +59,8 @@ begin
         `CLK_MS:    data = clk_ms;
         `CLK_US:    data = clk_us;
         `SW:        data = {16'b0, SW};
-        `ERROR:     data = errno;
-        default:    errno = `INVALID_READ;
+        //`ERROR:     data = errno;
+        default:begin end    //errno = `INVALID_READ;
     endcase
 end
 
@@ -70,8 +74,8 @@ begin
             `VGA_LINE:  vga_line = data_write;
             `LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
-            `ERROR:     errno = data_write;
-            default:    errno = `INVALID_WRITE;
+            //`ERROR:     errno = data_write;
+            default: begin end //   errno = `INVALID_WRITE;
         endcase
     end
 end
