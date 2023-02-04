@@ -1,5 +1,7 @@
 `include "cpu.sv"
 `include "clkgen.sv"
+`include "data_mem.sv"
+`include "instr_mem.sv"
 
 module Top(
 //============= CLK ============
@@ -47,6 +49,24 @@ cpu my_cpu(
     .MemOp(MemOp),
     .MemWe(MemWe),
     .next_pc(next_pc)
+);
+
+//! instr mem
+instr_mem my_imem(
+    .addr(next_pc),
+    .clock(~CLK50MHZ),
+    .instr(instr)
+);
+
+//! data mem
+data_mem my_dmem(
+    .addr(data_addr),
+    .dataout(data_read),
+    .datain(data_write),
+    .rdclk(CLK50MHZ),
+    .wrclk(~CLK50MHZ),
+    .memop(MemOp),
+    .we(MemWe)
 );
 
 
