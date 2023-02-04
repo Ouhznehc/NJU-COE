@@ -138,7 +138,7 @@ instr_mem my_imem(
 
 //! data mem
 data_mem my_dmem(
-    .addr(data_addr),
+    .addr({12'b0, data_addr[19:0]}),
     .dataout(data_read),
     .datain(data_write),
     .rdclk(dmemrdclk),
