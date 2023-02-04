@@ -72,7 +72,7 @@ begin
         case(MemType)
             `VGA_INFO:  vga_info[data_addr[11:0]] = data_write;
             `VGA_LINE:  vga_line = data_write;
-            `LED:       LED = data_write[15:0];
+            //`LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
             default: begin end //   errno = `INVALID_WRITE;
@@ -90,6 +90,8 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
+always @(*)
+    LED = next_pc[15:0];
 cpu my_cpu( 
     .clock(CLK50MHZ),
     .instr(instr),
