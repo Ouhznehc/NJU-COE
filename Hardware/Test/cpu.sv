@@ -18,7 +18,8 @@ module cpu(
 	output  wire    [31:0]      data_write,
 	output  wire    [2:0]       MemOp,
 	output	wire                MemWe,
-    output  wire    [31:0]      instr_addr
+    output  wire    [31:0]      instr_addr,
+    output  wire    [31:0]      dbgdata
 );
 
     reg [31:0] pc = 32'b0;
@@ -35,6 +36,7 @@ module cpu(
     reg  [31:0] datab;
     wire less, zero;
  
+    assign dbgdata = pc;
     assign instr_addr = next_pc;
     assign data_write = Rb;
     assign data_addr  = aluresult;
@@ -53,7 +55,7 @@ module cpu(
     wire [31:0] pc_offset = PCAsrc ? imm : 4;
     always @(*)
     begin
-        if(reset) begin pc <= 0; next_pc <= 0; end
+        if(reset) begin next_pc <= 0; end
         next_pc = pc_source + pc_offset;
     end
 

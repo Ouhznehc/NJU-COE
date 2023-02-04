@@ -43,6 +43,7 @@ module Top(
 (*KEEP = "TRUE"*) reg [31:0] vga_line;
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
+(*KEEP = "TRUE"*) wire pc;
 
 
 
@@ -105,7 +106,7 @@ always @(posedge CLK50MHZ) begin
 end
 
 cpu my_cpu( 
-    .clock(CLK50MHZ),
+    .clock(SW[0]),
     .reset(reset),
     .instr(instr),
     .data_addr(data_addr),
@@ -113,7 +114,8 @@ cpu my_cpu(
     .data_write(data_write),
     .MemOp(MemOp),
     .MemWe(MemWe),
-    .instr_addr(instr_addr)
+    .instr_addr(instr_addr),
+    .dbgdata(pc)
 );
 
 //! instr mem
