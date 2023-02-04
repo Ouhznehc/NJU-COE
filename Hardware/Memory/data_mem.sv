@@ -16,12 +16,6 @@ module data_mem(
     wire [1:0] offset;
     wire [31:0] data;
     reg [31:0] mem [1000:0];
-    initial
-    begin
-        integer i;
-        for(i = 0; i <= 1000; i = i + 1)
-            mem[i] = 32'b0; 
-    end
     assign unit = addr / 4;
     assign offset = addr % 4;
     assign data = mem[unit];

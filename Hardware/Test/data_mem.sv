@@ -16,6 +16,10 @@ module data_mem(
     wire [1:0] offset;
     wire [31:0] data;
     reg [31:0] mem [1000:0];
+    initial 
+    begin
+        $readmemh("", data_mem, 0, 1000);
+    end
     assign unit = addr / 4;
     assign offset = addr % 4;
     assign data = mem[unit];

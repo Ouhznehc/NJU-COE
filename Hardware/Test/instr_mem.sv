@@ -7,16 +7,10 @@ module instr_mem (
     output reg [31:0] instr
 );
     reg [31:0] instr_mem [1000:0];
-    initial
+    initial 
     begin
-        integer i;
-        for(i = 0; i <= 1000; i = i + 1)
-            instr_mem[i] = 32'b0; 
+        $readmemh("", instr_mem, 0, 1000);
     end
-    // initial 
-    // begin
-    //     $readmemh("", instr_mem);
-    // end
     always @(negedge clock)
         instr <= instr_mem[addr];
 endmodule
