@@ -137,8 +137,8 @@ instr_mem my_imem(
 );
 
 //! data mem
-dmem_ctrl my_dmem(
-    .addr(data_addr[17:0]),
+data_mem my_dmem(
+    .addr(data_addr),
     .dataout(data_read),
     .datain(data_write),
     .rdclk(dmemrdclk),

@@ -77,7 +77,7 @@ module cpu(
     wire [31:0] pc_offset = PCAsrc ? imm : 4;
     always @(*)
     begin
-        if(rst) begin pc <= 0; next_pc <= 0; end
+        if(rst) begin next_pc <= 0; end
         next_pc = pc_source + pc_offset;
     end
 
