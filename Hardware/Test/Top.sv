@@ -65,7 +65,7 @@ begin
         `CLK_US:    data = clk_us;
         `SW:        data = {16'b0, SW};
         //`ERROR:     data = errno;
-        default:begin end    //errno = `INVALID_READ;
+        default:   errno = `INVALID_READ;
     endcase
 end
 
@@ -80,7 +80,7 @@ begin
             `LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
-            default: begin end //   errno = `INVALID_WRITE;
+            default:    errno = `INVALID_WRITE;
         endcase
     end
 end
