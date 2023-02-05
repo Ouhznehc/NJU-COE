@@ -95,9 +95,9 @@ clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
 clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 
 //! cpu
-debounce button(CLK100MHZ, SW[0], clk);
 //----- debug signal -----
 
+//debounce button(CLK100MHZ, SW[0], clk);
 // always @(*)
 // begin
 //     Hex7Seg[3:0] = pc[15:0];
@@ -117,7 +117,7 @@ always @(posedge CLK50MHZ) begin
 end
 
 cpu my_cpu( 
-    .clock(clk),
+    .clock(CLK50MHZ),
     .reset(reset),
     .imemaddr(instr_addr),
     .imemdataout(instr),
