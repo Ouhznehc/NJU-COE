@@ -44,14 +44,14 @@ module Top(
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
 (*KEEP = "TRUE"*) wire [31:0] pc;
-(*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk;
-
+(*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk, clock;
+assign clock = CLK50MHZ;
 
 
 
 //! data read
 assign MemType = data_addr[31:20];
-always @(posedge CLK50MHZ)
+always @(posedge clock)
 begin
     if(!MemWe)
     case(MemType)
@@ -70,7 +70,7 @@ begin
 end
 
 //! data write
-always @(negedge CLK50MHZ)
+always @(negedge clock)
 begin
     if(MemWe)
     begin
@@ -109,15 +109,15 @@ initial begin
 	reset = 1'b1;
 	initialed = 1'b0;
 end
-always @(negedge CLK50MHZ) begin
+always @(negedge clock) begin
 	initialed <= 1'b1;
 end
-always @(posedge CLK50MHZ) begin
+always @(posedge clock) begin
 	if(initialed) reset <= 1'b0;
 end
 
 cpu my_cpu( 
-    .clock(CLK50MHZ),
+    .clock(clock),
     .reset(reset),
     .imemaddr(instr_addr),
     .imemdataout(instr),
