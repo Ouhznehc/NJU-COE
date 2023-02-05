@@ -6,7 +6,7 @@ module instr_mem (
     input  wire [31:0] addr,
     output reg [31:0] instr
 );
-    reg [31:0] instr_mem [100:0];
+    reg [31:0] instr_mem [32767:0];
     initial 
     begin
         $readmemh("C:/Users/24421/Desktop/lab12/only_led/software/main.txt", instr_mem);

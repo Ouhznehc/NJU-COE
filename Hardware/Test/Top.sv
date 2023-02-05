@@ -53,6 +53,7 @@ module Top(
 assign MemType = data_addr[31:20];
 always @(posedge CLK50MHZ)
 begin
+    if(!MemWe)
     case(MemType)
         `DATA:      data = data_read;
         `VGA_LINE:  data = vga_line;
@@ -131,7 +132,7 @@ cpu my_cpu(
 
 //! instr mem
 instr_mem my_imem(
-    .addr(instr_addr),
+    .addr({2'b0, instr_addr[31:2]}),
     .clock(imemclk),
     .instr(instr)
 );

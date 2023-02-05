@@ -15,7 +15,7 @@ module data_mem(
     wire [31:0] unit;
     wire [1:0] offset;
     wire [31:0] data;
-    reg [31:0] mem [1000:0];
+    reg [31:0] mem [32767:0];
     initial 
     begin
         $readmemh("C:/Users/24421/Desktop/lab12/only_led/software/main_d.txt", mem);
