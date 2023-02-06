@@ -5,6 +5,8 @@
 `include "clkgen.sv"
 `include "data_mem.sv"
 `include "instr_mem.sv"
+`include "debounce.sv"
+
 module Top(
 //============= CLK ============
     input   wire                CLK100MHZ,
@@ -79,7 +81,7 @@ begin
             `VGA_INFO:  vga_info[{12'b0, data_addr[19:0]}] = data_write;
             `VGA_LINE:  vga_line = data_write;
             `LED:       LED = data_write[15:0];
-            `HEX:       Hex7Seg = data_write;
+            //`HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
             //default:    errno = `INVALID_WRITE;
         endcase
@@ -99,12 +101,12 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 //----- debug signal -----
 
 //debounce button(CLK100MHZ, SW[0], clk);
-// always @(*)
-// begin
-//     Hex7Seg[3:0] = pc[15:0];
-//     Hex7Seg[7:4] = instr_addr[15:0];
-//     LED[15:0] = 16'd1;
-// end
+always @(*)
+begin
+    Hex7Seg[3:0] = pc[7:0];
+    Hex7Seg[5:4] = key_down;
+    Hex7Seg[7:6] = key_code;
+end
 
 initial begin
 	reset = 1'b1;
@@ -118,7 +120,7 @@ always @(posedge CLK50MHZ) begin
 end
 
 cpu my_cpu( 
-    .clock(CLK1MHZ),
+    .clock(CLK10MHZ),
     .reset(reset),
     .imemaddr(instr_addr),
     .imemdataout(instr),
