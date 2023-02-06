@@ -227,8 +227,8 @@ vga_ascii my_vga_ascii(
 
 char_buf my_char_buf(
     .addr(char_addr),
-    .wrclk(dmemwrclk),            
-    .rdclk(dmemrdclk), 
+    .wrclk(CLK100MHZ),            
+    .rdclk(~CLK50MHZ), 
     .datain(data_write[7:0]), 
     .we(MemType == `VGA_INFO && MemWe), 
     .dataout(current_char)
