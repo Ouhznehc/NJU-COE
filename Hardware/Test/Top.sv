@@ -33,7 +33,6 @@ module Top(
 //---------- declarations-------------
 (*KEEP = "TRUE"*) wire [11:0] MemType;
 (*KEEP = "TRUE"*) wire [7:0] key_code;
-(*KEEP = "TRUE"*) wire key_down;
 (*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK10MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
 (*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, instr_addr;
 (*KEEP = "TRUE"*) reg [31:0] clk_s, clk_ms, clk_us;
@@ -52,7 +51,7 @@ module Top(
 
 //! data read
 assign MemType = data_addr[31:20];
-always @(posedge CLK50MHZ)
+always @(*)
 begin
     if(!MemWe)
     case(MemType)
@@ -60,7 +59,6 @@ begin
         `VGA_LINE:  data = vga_line;
         `VGA_INFO:  data = vga_info[{12'b0, data_addr[19:0]}];
         `KBD_CODE:  data = {24'b0, key_code};
-        `KBD_DOWN:  data = {31'b0, key_down};
         `LED:       data = {16'b0, LED};
         `HEX:       data = Hex7Seg;
         `CLK_S:     data = clk_s;
@@ -73,7 +71,7 @@ begin
 end
 
 //! data write
-always @(negedge CLK50MHZ)
+always @(posedge dmemwrclk)
 begin
     if(MemWe)
     begin
@@ -103,8 +101,6 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 //debounce button(CLK100MHZ, SW[0], clk);
 always @(*)
 begin
-    Hex7Seg[3:0] = pc[7:0];
-    Hex7Seg[5:4] = key_down;
     Hex7Seg[7:6] = key_code;
 end
 
@@ -120,7 +116,7 @@ always @(posedge CLK50MHZ) begin
 end
 
 cpu my_cpu( 
-    .clock(CLK10MHZ),
+    .clock(CLK1MHZ),
     .reset(reset),
     .imemaddr(instr_addr),
     .imemdataout(instr),
@@ -174,8 +170,7 @@ keyboard my_keyborad(
     .ps2_clk(PS2_CLK),
     .ps2_data(PS2_DATA),
     .clk(dmemrdclk),
-    .key_code(key_code),
-    .key_down(key_down)
+    .ascii_key(key_code)
 );
 
 //! vga
