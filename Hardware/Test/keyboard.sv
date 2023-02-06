@@ -22,7 +22,7 @@ module keyboard(
     wire [7:0] keydata;
     reg [7:0] ignore_next;
     //reg [7:0] current_key;
-    reg ctrl, shift, caps, last_caps, pressing;
+    reg ctrl, shift, caps, last_caps;
 
     ps2_keyboard ps(
         .clk(clk),
