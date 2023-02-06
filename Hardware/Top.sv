@@ -43,7 +43,9 @@ wire [2:0]  MemOp;
 wire MemWe;
 reg [31:0] errno = 32'b0;
 reg [31:0] vga_line;
-reg [7:0] vga_info [4095:0];
+reg [7:0]  vga_info [4095:0];
+
+
 
 
 
@@ -147,6 +149,7 @@ keyboard my_keyborad(
 );
 
 //! vga
+
 
 
 endmodule

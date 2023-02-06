@@ -6,6 +6,9 @@
 `include "data_mem.sv"
 `include "instr_mem.sv"
 `include "debounce.sv"
+`include "vga_ascii.sv"
+`include "vga_ctrl.sv"
+`include "char_buf.sv"
 
 module Top(
 //============= CLK ============
@@ -41,11 +44,32 @@ module Top(
 (*KEEP = "TRUE"*) wire [2:0]  MemOp;
 (*KEEP = "TRUE"*) wire MemWe;
 (*KEEP = "TRUE"*) reg [31:0] errno = 32'b0;
-(*KEEP = "TRUE"*) reg [31:0] vga_line;
+
+
 (*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
 (*KEEP = "TRUE"*) wire [31:0] pc;
 (*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk;
+
+(*KEEP = "TRUE"*) wire [9:0] h_addr;
+(*KEEP = "TRUE"*) wire [9:0] v_addr;
+(*KEEP = "TRUE"*) wire [11:0] vga_data;
+(*KEEP = "TRUE"*) wire valid;
+(*KEEP = "TRUE"*) wire [6:0] h_char; //char 70 per line  //now display char positon in the screen, used in vga
+(*KEEP = "TRUE"*) wire [4:0] v_char; //char 30 lines     //now display char positon in the screen, used in vga
+(*KEEP = "TRUE"*) wire [3:0] h_font; //font 9 point horizontal //now display font position in the char
+(*KEEP = "TRUE"*) wire [3:0] v_font; //font 16 point vertical  //now display font position in the char
+(*KEEP = "TRUE"*) reg [6:0] h_cur;
+(*KEEP = "TRUE"*) reg [4:0] v_cur; 
+
+(*KEEP = "TRUE"*) wire [7:0] current_char; //current character;
+
+(*KEEP = "TRUE"*) wire cursor;
+(*KEEP = "TRUE"*) wire char_wr;//always be 1 in the posedge of VGA_CLK
+(*KEEP = "TRUE"*) wire [11:0] char_addr;
+(*KEEP = "TRUE"*) wire [11:0] char_wr_addr; //[h_cur, v_cur], higher 7 bit is h_cur, lower 5 bit is v_cur
+(*KEEP = "TRUE"*) wire [11:0] char_rd_addr;
+(*KEEP = "TRUE"*) reg [4:0] line_offset; //for rolling pages
 
 
 
@@ -56,8 +80,8 @@ begin
     if(!MemWe)
     case(MemType)
         `DATA:       data = data_read;
-        `VGA_LINE:   data = vga_line;
-        `VGA_INFO:   data = vga_info[{12'b0, data_addr[19:0]}];
+        `VGA_LINE:   data = line_offset;
+        `CURSOR:     data = {20'b0, v_cur, h_cur};
         `KBD_ASCII:  data = {24'b0, kbd_ascii};
         `SW:         data = {16'b0, SW};
         `LED:        data = {16'b0, LED};
@@ -76,8 +100,8 @@ begin
     if(MemWe)
     begin
         case(MemType)
-            `VGA_INFO:  vga_info[{12'b0, data_addr[19:0]}] = data_write;
-            `VGA_LINE:  vga_line = data_write;
+            `VGA_LINE:  line_offset = data_write[4:0];
+            `CURSOR:    {v_cur, h_cur} = data_write[11:0];
             `LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
@@ -173,6 +197,50 @@ keyboard my_keyborad(
 );
 
 //! vga
+vga_ctrl my_vga(
+    .pclk(CLK25MHZ), 
+    .vga_data(vga_data), 
+    .h_addr(h_addr), 
+    .v_addr(v_addr), 
+    .hsync(VGA_HS), 
+    .vsync(VGA_VS), 
+    .valid(valid), 
+    .vga_r(VGA_R), 
+    .vga_g(VGA_G), 
+    .vga_b(VGA_B), 
+    .h_char(h_char), 
+    .v_char(v_char), 
+    .h_font(h_font), 
+    .v_font(v_font)
+);
+
+vga_ascii my_vga_ascii(
+    .pclk(CLK50MHZ), 
+    .c_valid(valid), 
+    .vga_data(vga_data), 
+    .char(current_char), 
+    .h_font(h_font), 
+    .v_font(v_font), 
+    .cursor(cursor)
+);
+
+
+char_buf my_char_buf(
+    .addr(char_addr),
+    .wrclk(dmemwrclk),            
+    .rdclk(dmemrdclk), 
+    .datain(data_write[7:0]), 
+    .we(MemType == `VGA_INFO && MemWe), 
+    .dataout(current_char)
+);
+
+assign char_addr = (MemWe) ? char_wr_addr : char_rd_addr;
+
+assign char_rd_addr = {h_char, (v_char + line_offset)};
+
+assign char_wr_addr = {data_addr[6:0], data_addr[11:7]};
+
+assign cursor = (h_char == h_cur) & (v_char == v_cur) & CLK1HZ;
 endmodule
 
 
