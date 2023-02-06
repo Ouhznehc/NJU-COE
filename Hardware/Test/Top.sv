@@ -32,7 +32,7 @@ module Top(
 //imemclk=~clock dmemrdclk = clock dmemwrclk = ~clock;
 //---------- declarations-------------
 (*KEEP = "TRUE"*) wire [11:0] MemType;
-(*KEEP = "TRUE"*) wire [7:0] kbd_ascii, kbd_code;
+(*KEEP = "TRUE"*) wire [7:0] kbd_ascii;
 (*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
 (*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, instr_addr;
 (*KEEP = "TRUE"*) reg [31:0] clk_s, clk_ms, clk_us;
@@ -59,12 +59,12 @@ begin
         `VGA_LINE:   data = vga_line;
         `VGA_INFO:   data = vga_info[{12'b0, data_addr[19:0]}];
         `KBD_ASCII:  data = {24'b0, kbd_ascii};
+        `SW:         data = {16'b0, SW};
         `LED:        data = {16'b0, LED};
         `HEX:        data = Hex7Seg;
         `CLK_S:      data = clk_s;
         `CLK_MS:     data = clk_ms;
         `CLK_US:     data = clk_us;
-        `SW:         data = {16'b0, SW};
         //`ERROR:     data = errno;
         //default:   errno = `INVALID_READ;
     endcase
@@ -98,11 +98,10 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 //----- debug signal -----
 
 //debounce button(CLK100MHZ, SW[0], clk);
-always @(*)
-begin
-    Hex7Seg[7:6] = kbd_ascii;
-    Hex7Seg[1:0] = kbd_code;
-end
+// always @(*)
+// begin
+//     Hex7Seg[7:6] = kbd_ascii;
+// end
 
 initial begin
 	reset = 1'b1;
@@ -170,8 +169,7 @@ keyboard my_keyborad(
     .ps2_clk(PS2_CLK),
     .ps2_data(PS2_DATA),
     .clk(dmemrdclk),
-    .ascii_key(kbd_ascii),
-    .current_key(kbd_code)
+    .ascii_key(kbd_ascii)
 );
 
 //! vga

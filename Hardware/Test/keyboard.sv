@@ -12,8 +12,7 @@ module keyboard(
     input ps2_clk,
     input ps2_data,
     input clk,
-    output reg [7:0] ascii_key,
-    output reg [7:0] current_key
+    output reg [7:0] ascii_key
 ); 
 
     reg nextdata_n;
@@ -21,7 +20,7 @@ module keyboard(
     wire overflow;
     wire [7:0] keydata;
     reg [7:0] ignore_next;
-    //reg [7:0] current_key;
+    reg [7:0] current_key;
     reg ctrl, shift, caps, last_caps;
 
     ps2_keyboard ps(
