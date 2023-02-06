@@ -56,15 +56,17 @@ begin
     case(MemType)
         `DATA:      data = data_read;
         `VGA_LINE:  data = vga_line;
+        `VGA_INFO:  data = vga_info[{12'b0, data_addr[19:0]}];
         `KBD_CODE:  data = {24'b0, key_code};
         `KBD_DOWN:  data = {31'b0, key_down};
+        `LED:       data = {16'b0, LED};
         `HEX:       data = Hex7Seg;
         `CLK_S:     data = clk_s;
         `CLK_MS:    data = clk_ms;
         `CLK_US:    data = clk_us;
         `SW:        data = {16'b0, SW};
         //`ERROR:     data = errno;
-        default:   errno = `INVALID_READ;
+        //default:   errno = `INVALID_READ;
     endcase
 end
 
@@ -74,12 +76,12 @@ begin
     if(MemWe)
     begin
         case(MemType)
-            `VGA_INFO:  vga_info[data_addr[11:0]] = data_write;
+            `VGA_INFO:  vga_info[{12'b0, data_addr[19:0]}] = data_write;
             `VGA_LINE:  vga_line = data_write;
             `LED:       LED = data_write[15:0];
             `HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
-            default:    errno = `INVALID_WRITE;
+            //default:    errno = `INVALID_WRITE;
         endcase
     end
 end
@@ -169,7 +171,7 @@ always @(posedge CLK1MHZ) clk_us <= clk_us + 1;
 keyboard my_keyborad(
     .ps2_clk(PS2_CLK),
     .ps2_data(PS2_DATA),
-    .clk(CLK50MHZ),
+    .clk(dmemrdclk),
     .key_code(key_code),
     .key_down(key_down)
 );

@@ -33,14 +33,9 @@ module keyboard(
         if(ready == 1'b1 && nextdata_n == 1'b1)
         begin
             if(keydata == 8'hF0) // break code
-            begin
                 ignore_next <= 8'hF0;
-                key_code <= 8'b0; // clear the key
-            end
             else if(keydata == 8'hE0) // special key ignore
-            begin
                 ignore_next <= 8'hE0;
-            end
             else if(ignore_next == 8'hF0 || ignore_next == 8'hE0) //after F0 or E0
             begin
                 ignore_next <= 8'h00; // ignore, but we will look at the next key
@@ -52,13 +47,9 @@ module keyboard(
             end
             else //normal key
             begin
-                if(keydata != key_code) // not continous key
-                begin
-                    key_code <= keydata;
-                    key_down <= 1'b1;
-                end
+                key_code <= keydata;
+                key_down <= 1'b1;
             end
-
             nextdata_n <= 1'b0;
         end
         else
