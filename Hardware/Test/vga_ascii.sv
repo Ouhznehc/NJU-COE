@@ -12,7 +12,7 @@ module vga_ascii(
     wire [11:0] line;
     initial 
     begin
-        $readmemh("C:/Users/Ouhznehc/Vivado/Library/General Files/font.txt", myfont, 0, 4095);    
+        $readmemh("C:/Users/24421/Desktop/Digital-Design/Hardware/Common/font.txt", myfont, 0, 4095);   
     end
 
     wire [11:0] out_data;
