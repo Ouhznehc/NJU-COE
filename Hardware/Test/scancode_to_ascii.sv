@@ -4,7 +4,7 @@ module scancode_to_ascii(addr, out);
     reg [7:0] rom [0:95][0:3];
     initial
     begin
-        $readmemh("C:/Users/Ouhznehc/Vivado/Library/General Files/scancode-ascii.txt", rom);
+        $readmemh("C:/Users/24421/Desktop/Digital-Design/Hardware/Common/scancode-ascii.txt", rom);
     end
     assign out = rom[addr[7:0]][addr[9:8]];
 endmodule
