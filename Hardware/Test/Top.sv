@@ -79,7 +79,7 @@ begin
             `VGA_INFO:  vga_info[{12'b0, data_addr[19:0]}] = data_write;
             `VGA_LINE:  vga_line = data_write;
             `LED:       LED = data_write[15:0];
-            //`HEX:       Hex7Seg = data_write;
+            `HEX:       Hex7Seg = data_write;
             //`ERROR:     errno = data_write;
             //default:    errno = `INVALID_WRITE;
         endcase
