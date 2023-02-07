@@ -46,7 +46,6 @@ module Top(
 (*KEEP = "TRUE"*) reg [31:0] errno = 32'b0;
 
 
-(*KEEP = "TRUE"*) reg [7:0] vga_info [4095:0];
 (*KEEP = "TRUE"*) reg reset, initialed;
 (*KEEP = "TRUE"*) wire [31:0] pc;
 (*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk;
@@ -69,6 +68,7 @@ module Top(
 (*KEEP = "TRUE"*) wire [11:0] char_wr_addr;
 (*KEEP = "TRUE"*) wire [11:0] char_rd_addr;
 (*KEEP = "TRUE"*) reg [4:0] line_offset;
+(*KEEP = "TRUE"*) reg [31:0] char_buf_data;
 
 
 
@@ -80,6 +80,7 @@ begin
     case(MemType)
         `DATA:       data = data_read;
         `VGA_LINE:   data = {27'b0, line_offset};
+        `VGA_INFO:   data = char_buf_data;
         `CURSOR:     data = {20'b0, v_cur, h_cur};
         `KBD_ASCII:  data = {24'b0, kbd_ascii};
         `SW:         data = {16'b0, SW};
@@ -230,15 +231,16 @@ vga_ascii my_vga_ascii(
 
 
 char_buf my_char_buf(
-    .addr(char_addr),
+    .rdaddr(char_rd_addr),
+    .wraddr(char_wr_addr),
     .wrclk(dmemwrclk),            
     .rdclk(~CLK50MHZ), 
     .datain(data_write), 
     .we(MemType == `VGA_INFO && MemWe), 
-    .dataout({frontcolor, backcolor, current_char})
+    .dataout({frontcolor, backcolor, current_char}),
+    .data_read(char_buf_data)
 );
 
-assign char_addr = (MemWe) ? char_wr_addr : char_rd_addr;
 
 assign char_rd_addr = {h_char, (v_char + line_offset)};
 

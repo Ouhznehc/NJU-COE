@@ -2,9 +2,11 @@
 `define CHAR_BUG_SV
 
 module char_buf(
-    input   wire    [11:0]      addr,
+    input   wire    [11:0]      rdaddr,
+    input   wire    [11:0]      wraddr,
     input   wire    [31:0]      datain,
     output  reg     [31:0]      dataout,
+    output  reg     [31:0]      data_read,
     input   wire                rdclk,
     input   wire                wrclk,
     input   wire                we
@@ -27,9 +29,12 @@ module char_buf(
 
     // end
     always @(posedge rdclk)
-        dataout <= vga[addr];
+    begin
+        dataout <= vga[rdaddr];
+        data_read <= vga[wraddr];
+    end
     always @(posedge wrclk)
-        if(we) vga[addr] <= datain;
+        if(we) vga[wraddr] <= datain;
 
 endmodule
 `endif
