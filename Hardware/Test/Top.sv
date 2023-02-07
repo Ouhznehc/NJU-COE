@@ -8,6 +8,7 @@
 `include "debounce.sv"
 `include "vga_ascii.sv"
 `include "vga_ctrl.sv"
+`include "char_buf.sv"
 
 module Top(
 //============= CLK ============
@@ -63,10 +64,10 @@ module Top(
 (*KEEP = "TRUE"*) reg [7:0] current_char;
 (*KEEP = "TRUE"*) reg [11:0] frontcolor, backcolor;
 (*KEEP = "TRUE"*) wire cursor;
+(*KEEP = "TRUE"*) wire [11:0] char_addr;
 (*KEEP = "TRUE"*) wire [11:0] char_wr_addr;
 (*KEEP = "TRUE"*) wire [11:0] char_rd_addr;
 (*KEEP = "TRUE"*) reg [4:0] line_offset;
-(*KEEP = "TRUE"*) reg [31:0] vga [4095:0]; //{frontcolor(12'hFFF), backcolor(12'h000), char}
 
 
 
@@ -78,7 +79,6 @@ begin
     case(MemType)
         `DATA:       data = data_read;
         `VGA_LINE:   data = {27'b0, line_offset};
-        `VGA_INFO:   data = vga[char_wr_addr];
         `CURSOR:     data = {20'b0, v_cur, h_cur};
         `KBD_ASCII:  data = {24'b0, kbd_ascii};
         `SW:         data = {16'b0, SW};
@@ -227,11 +227,17 @@ vga_ascii my_vga_ascii(
     .cursor(cursor)
 );
 
-always @(negedge CLK50MHZ)
-        {frontcolor, backcolor, current_char} <= vga[char_rd_addr];
-always @(posedge dmemwrclk)
-        if(MemType == `VGA_INFO && MemWe) vga[char_wr_addr] <= data_write;
 
+char_buf my_char_buf(
+    .addr(char_addr),
+    .wrclk(dmemwrclk),            
+    .rdclk(~CLK50MHZ), 
+    .datain(data_write), 
+    .we(MemType == `VGA_INFO && MemWe), 
+    .dataout({frontcolor, backcolor, current_char})
+);
+
+assign char_addr = (MemType == `VGA_INFO && MemWe) ? char_wr_addr : char_rd_addr;
 
 assign char_rd_addr = {h_char, (v_char + line_offset)};
 
