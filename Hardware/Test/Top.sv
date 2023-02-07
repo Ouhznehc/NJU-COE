@@ -241,7 +241,7 @@ assign char_addr = (MemWe) ? char_wr_addr : char_rd_addr;
 
 assign char_rd_addr = {h_char, (v_char + line_offset)};
 
-assign char_wr_addr = {data_addr[6:0], data_addr[11:7]};
+assign char_wr_addr = {data_addr[8:2], data_addr[13:9]};
 
 assign cursor = (h_char == h_cur) & (v_char == v_cur) & CLK1HZ;
 endmodule
