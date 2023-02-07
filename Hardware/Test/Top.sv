@@ -36,7 +36,7 @@ module Top(
 //---------- declarations-------------
 (*KEEP = "TRUE"*) wire [11:0] MemType;
 (*KEEP = "TRUE"*) wire [7:0] kbd_ascii;
-(*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
+(*KEEP = "TRUE"*) wire CLK50MHZ, CLK25MHZ, CLK2MHZ, CLK1MHZ, CLK10KHZ, CLK1KHZ, CLK1HZ;
 (*KEEP = "TRUE"*) wire [31:0] instr, data_addr, data_write, data_read, instr_addr;
 (*KEEP = "TRUE"*) reg [31:0] clk_s, clk_ms, clk_us;
 (*KEEP = "TRUE"*) reg [7:0][3:0] Hex7Seg;
@@ -112,6 +112,7 @@ end
 //! clkgen
 clkgen #(50000000) clkgen_50MHZ(.clkin(CLK100MHZ), .clkout(CLK50MHZ));
 clkgen #(25000000) clkgen_25MHZ(.clkin(CLK100MHZ), .clkout(CLK25MHZ));
+clkgen #(2000000)  clkgen_2MHZ(.clkin(CLK100MHZ), .clkout(CLK2MHZ));
 clkgen #(1000000)  clkgen_1MHZ(.clkin(CLK100MHZ), .clkout(CLK1MHZ));
 clkgen #(10000)    clkgen_10KHZ(.clkin(CLK100MHZ), .clkout(CLK10KHZ));
 clkgen #(1000)     clkgen_1KHZ(.clkin(CLK100MHZ), .clkout(CLK1KHZ));
