@@ -22,7 +22,7 @@ module vga_ascii(
 
     always @(*)
     begin
-        if(cursorline) out_data = 12'hFFF;
+        if(cursorline && line[h_font - 1] != 1'b1) out_data = 12'hFFF;
         else if(line[h_font - 1] == 1'b1) out_data = frontcolor;
         else out_data = backcolor;
     end
