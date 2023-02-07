@@ -1,12 +1,14 @@
 module vga_ascii(
-    input pclk,
-    input rst,
-    input c_valid,
-    output reg [11:0] vga_data, //!modified from 23
-    input [7:0] char,
-    input [3:0] h_font,
-    input [3:0] v_font,
-    input cursor
+    input   wire            pclk,
+    input   wire            rst,
+    input   wire            c_valid,
+    input   wire    [11:0]  frontcolor,
+    input   wire    [11:0]  backcolor,
+    output  reg     [11:0]  vga_data,
+    input   wire    [7:0]   char,
+    input   wire    [3:0]   h_font,
+    input   wire    [3:0]   v_font,
+    input   wire            cursor
 );
     reg [11:0] myfont[4095:0];
     wire [11:0] line;
@@ -16,15 +18,9 @@ module vga_ascii(
     end
 
     wire [11:0] out_data;
-
-    wire [11:0] frontcolor; //white
-    wire [11:0] backcolor; //black
     wire cursorline;
 
-    assign frontcolor = 12'hFFF;
-    assign backcolor  = 12'h000;
-
-    assign out_data = (line[h_font - 1] == 1'b1 | cursorline) ? frontcolor : backcolor; //!modified from h_font
+    assign out_data = (line[h_font - 1] == 1'b1 | cursorline) ? frontcolor : backcolor;
     assign line = myfont[{char, v_font}];
 
     assign cursorline = cursor & (h_font == 4'd0); // i don't know why it doesn't work

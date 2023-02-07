@@ -63,7 +63,7 @@ module Top(
 (*KEEP = "TRUE"*) reg [4:0] v_cur; 
 
 (*KEEP = "TRUE"*) wire [7:0] current_char; //current character;
-
+(*KEEP = "TRUE"*) wire [11:0] frontcolor, backcolor;
 (*KEEP = "TRUE"*) wire cursor;
 (*KEEP = "TRUE"*) wire char_wr;//always be 1 in the posedge of VGA_CLK
 (*KEEP = "TRUE"*) wire [11:0] char_addr;
@@ -217,6 +217,8 @@ vga_ctrl my_vga(
 vga_ascii my_vga_ascii(
     .pclk(CLK50MHZ), 
     .c_valid(valid), 
+    .frontcolor(frontcolor),
+    .backcolor(backcolor),
     .vga_data(vga_data), 
     .char(current_char), 
     .h_font(h_font), 
@@ -229,9 +231,9 @@ char_buf my_char_buf(
     .addr(char_addr),
     .wrclk(CLK100MHZ),            
     .rdclk(~CLK50MHZ), 
-    .datain(data_write[7:0]), 
+    .datain(data_write), 
     .we(MemType == `VGA_INFO && MemWe), 
-    .dataout(current_char)
+    .dataout({frontcolor, backcolor, current_char})
 );
 
 assign char_addr = (MemWe) ? char_wr_addr : char_rd_addr;

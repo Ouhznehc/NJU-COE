@@ -1,18 +1,18 @@
 module vga_ctrl(
-    input pclk,           
-    input [11:0] vga_data,   
-    output [9:0] h_addr,     
-    output [9:0] v_addr,
-    output hsync,          
-    output vsync,   
-    output valid,
-    output [3:0] vga_r,     
-    output [3:0] vga_g,
-    output [3:0] vga_b,
-    output reg [6:0] h_char,
-    output     [4:0] v_char,
-    output reg [3:0] h_font,
-    output     [3:0] v_font
+    input   wire                pclk,           
+    input   wire    [11:0]      vga_data,   
+    output  wire    [9:0]       h_addr,     
+    output  wire    [9:0]       v_addr,
+    output  wire                hsync,          
+    output  wire                vsync,   
+    output  wire                valid,
+    output  wire    [3:0]       vga_r,     
+    output  wire    [3:0]       vga_g,
+    output  wire    [3:0]       vga_b,
+    output  reg     [6:0]       h_char,
+    output  wire    [4:0]       v_char,
+    output  reg     [3:0]       h_font,
+    output  wire    [3:0]       v_font
     );
     parameter h_frontporch = 96;
     parameter h_active = 150;
