@@ -230,7 +230,7 @@ vga_ascii my_vga_ascii(
 
 char_buf my_char_buf(
     .addr(char_addr),
-    .wrclk(CLK100MHZ),            
+    .wrclk(dmemwrclk),            
     .rdclk(~CLK50MHZ), 
     .datain(data_write), 
     .we(MemType == `VGA_INFO && MemWe), 
