@@ -194,7 +194,7 @@ always @(posedge CLK1MHZ) clk_us <= clk_us + 1;
 keyboard my_keyborad(
     .ps2_clk(PS2_CLK),
     .ps2_data(PS2_DATA),
-    .clk(dmemrdclk),
+    .clk(~CLK50MHZ),
     .ascii_key(kbd_ascii)
 );
 
