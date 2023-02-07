@@ -55,21 +55,20 @@ module Top(
 (*KEEP = "TRUE"*) wire [9:0] v_addr;
 (*KEEP = "TRUE"*) wire [11:0] vga_data;
 (*KEEP = "TRUE"*) wire valid;
-(*KEEP = "TRUE"*) wire [6:0] h_char; //char 70 per line  //now display char positon in the screen, used in vga
-(*KEEP = "TRUE"*) wire [4:0] v_char; //char 30 lines     //now display char positon in the screen, used in vga
-(*KEEP = "TRUE"*) wire [3:0] h_font; //font 9 point horizontal //now display font position in the char
-(*KEEP = "TRUE"*) wire [3:0] v_font; //font 16 point vertical  //now display font position in the char
+(*KEEP = "TRUE"*) wire [6:0] h_char; 
+(*KEEP = "TRUE"*) wire [4:0] v_char;
+(*KEEP = "TRUE"*) wire [3:0] h_font;
+(*KEEP = "TRUE"*) wire [3:0] v_font;
 (*KEEP = "TRUE"*) reg [6:0] h_cur;
 (*KEEP = "TRUE"*) reg [4:0] v_cur; 
 
-(*KEEP = "TRUE"*) wire [7:0] current_char; //current character;
+(*KEEP = "TRUE"*) wire [7:0] current_char;
 (*KEEP = "TRUE"*) wire [11:0] frontcolor, backcolor;
 (*KEEP = "TRUE"*) wire cursor;
-(*KEEP = "TRUE"*) wire char_wr;//always be 1 in the posedge of VGA_CLK
 (*KEEP = "TRUE"*) wire [11:0] char_addr;
-(*KEEP = "TRUE"*) wire [11:0] char_wr_addr; //[h_cur, v_cur], higher 7 bit is h_cur, lower 5 bit is v_cur
+(*KEEP = "TRUE"*) wire [11:0] char_wr_addr;
 (*KEEP = "TRUE"*) wire [11:0] char_rd_addr;
-(*KEEP = "TRUE"*) reg [4:0] line_offset; //for rolling pages
+(*KEEP = "TRUE"*) reg [4:0] line_offset;
 
 
 
@@ -80,7 +79,7 @@ begin
     if(!MemWe)
     case(MemType)
         `DATA:       data = data_read;
-        `VGA_LINE:   data = line_offset;
+        `VGA_LINE:   data = {27'b0, line_offset};
         `CURSOR:     data = {20'b0, v_cur, h_cur};
         `KBD_ASCII:  data = {24'b0, kbd_ascii};
         `SW:         data = {16'b0, SW};
@@ -126,6 +125,8 @@ clkgen #(1)        clkgen_1HZ(.clkin(CLK100MHZ), .clkout(CLK1HZ));
 // begin
 //     Hex7Seg[7:6] = kbd_ascii;
 // end
+
+//----- end debug ---
 
 initial begin
 	reset = 1'b1;

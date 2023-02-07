@@ -17,13 +17,19 @@ module vga_ascii(
         $readmemh("C:/Users/24421/Desktop/Digital-Design/Hardware/Common/font.txt", myfont, 0, 4095);   
     end
 
-    wire [11:0] out_data;
+    reg [11:0] out_data;
     wire cursorline;
 
-    assign out_data = (line[h_font - 1] == 1'b1 | cursorline) ? frontcolor : backcolor;
+    always @(*)
+    begin
+        if(cursorline) out_data = 12'hFFF;
+        else if(line[h_font - 1] == 1'b1) out_data = frontcolor;
+        else out_data = backcolor;
+    end
+
     assign line = myfont[{char, v_font}];
 
-    assign cursorline = cursor & (h_font == 4'd0); // i don't know why it doesn't work
+    assign cursorline = cursor & (h_font == 4'd0);
 
     always @(posedge pclk)
     begin
