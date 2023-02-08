@@ -13,11 +13,10 @@ void entry()
 int main(){
     device_init();
     while(1){
-        char *cmd   = shell_readline();
+        char *cmd = shell_readline();
         new_line();
         shell_handle_cmd(cmd);
         new_shell_line();
-
     }
     return 0;
 }
