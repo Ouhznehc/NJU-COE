@@ -4,11 +4,43 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdint.h>
-#include "fpga.h"
-#include "dog.h"
 
 #define true 1
 #define false 0
+
+//device map
+#define VGA_INFO     (0x00200000)
+#define VGA_LINE     (0x00300000)
+#define VGA_MAXLINE  (30)
+#define VGA_MAXCOL   (70)
+#define KEY          (0x00400000)
+#define SW           (0x00500000)
+#define LED          (0x00600000)
+#define HEX          (0x00700000)
+#define CLK_S        (0x00800000)
+#define CLK_MS       (0x00900000)
+#define CLK_US       (0x00a00000)
+#define CURSOR       (0x00d00000)
+#define BLINK        (0x00e00000)
+
+
+
+// rgb color
+#define _RGB_BALCK  (0x00000000)
+#define _RGB_WHITE  (0x00000FFF)
+#define _RGB_GREEN  (0x000000F0)
+#define _RGB_BLUE   (0x000000FF)
+#define _RGB_RED    (0x00000F00)
+#define _RGB_PURPLE (0x00000F0F)
+#define _RGB_YELLOW (0x00000FF0)
+
+//key ascii
+#define _KEY_BACKSPACE (8)
+#define _KEY_ENTER      (13)
+#define _KEY_ENDL       (10)
+
+
+char dog_animation[] = "                       tt                         tij                                       i..t                      tj...t                                     t....t                    t......j                                    t.......t              t...,,,,,..j                                   t......tttttjtttttttj t...,,,,,,..t                                   t..ttt;..............i...,,,,,,,..t                                 tj............................,,,..t                                t....................................t                               t,..    ...............      .........t                              t.         ...........          ........t,                           j ::::::::::. ....... .::::::::::  .......t                           f;         ,#ff.....Lf          #Kf.......i                          f          #####f...f          f####f.......t                         f          #####L...i           ####L.......t                         L,         ,###f.....f          ####f.......t                          LfLLLLLLLLLLff;......fLLLLLLLLLLLLf........t                          t..........................................j                          t.........fffffff..........................j                          t....     fffffff      ....................j                          j..        fffff            ...............t                         t            fff       L                    :                         j        ff ffffL     Lf                    t                         ;i        fff  fffLfffL                    j                           t               fffL                     t                             t                                     j                                 tt                                t                                    :t                            tt                                         jtj                   ttj                                                 jttj.          jttj                                                       :jtttttttt.                              ";
 
 // string.h
 void  *memset    (void *s, int c, size_t n);

@@ -38,7 +38,6 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  assert(s1 != NULL && s2 != NULL);
   while((*s1) && (*s1 == *s2)) {
     s1++;
     s2++;
@@ -49,8 +48,7 @@ int strcmp(const char *s1, const char *s2) {
   else return 0;
 }
 
-int strncmp(const char *s1, const char *s2, size_t n) {
-  assert(s1 != NULL && s2 != NULL);    
+int strncmp(const char *s1, const char *s2, size_t n) {   
   unsigned char *str1 = (unsigned char*) s1;
   unsigned char *str2 = (unsigned char*) s2;   
   while (n--) { 
@@ -91,8 +89,7 @@ void *memcpy(void *out, const void *in, size_t n) {
     return out;
 }
 
-int memcmp(const void *s1, const void *s2, size_t n) {
-  assert(s1 != NULL && s2 != NULL); 
+int memcmp(const void *s1, const void *s2, size_t n) { 
   unsigned char *str1 = (unsigned char*) s1;
   unsigned char *str2 = (unsigned char*) s2;      
   while (n--) { 
