@@ -9,7 +9,7 @@ void delete_char(){
 	      if(cursor_h != 0){
 			      cursor_h --;
 			      cursor_v = VGA_MAXCOL - 1;
-			      while(get_char(vga_pixels[getpos(cursor_h, cursor_v)]) == 0) cursor_v--;
+			      while(get_char(vga_pixels[get_pos(cursor_h, cursor_v)]) == 0) cursor_v--;
 			      cursor_v ++;
 		    }
 	  }
