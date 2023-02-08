@@ -15,6 +15,7 @@
 `define CLK_US     12'h00a
 `define ERROR      12'h00c
 `define CURSOR     12'h00d
+`define BLINK      12'h00e
 
 //errno
 `define INVALID_READ    32'd1
