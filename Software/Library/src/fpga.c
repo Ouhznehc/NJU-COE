@@ -1,8 +1,10 @@
-#include "fpga.h"
-#include "dog.h"
+#include "klib.h"
+
+
+
 
 int* vga_start = (int*) VGA_START;
-int* vga_line_offest = (int *)VGA_LINE_O;
+int* vga_line_offest = (int *)VGA_LINE;
 int   vga_line = 0;
 int   vga_ch = 0;
 int* cur = (int *)CUR;

@@ -16,7 +16,7 @@ void new_cmd_line(){
 
 char pre_key = '\0';
 int  pre_time = 0;
-int kbd_key(){return }	
+int kbd_key(){return inl(KEY);}	
 
 char get_key(){
 	volatile int *key = (int *)KEY;

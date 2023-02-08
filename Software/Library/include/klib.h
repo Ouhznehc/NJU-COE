@@ -1,7 +1,11 @@
+
+
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include "fpga.h"
+#include "dog.h"
+
 #define true 1
 #define false 0
 
@@ -36,3 +40,11 @@ static inline uint32_t inl(uintptr_t addr) { return *(volatile uint32_t *)addr; 
 static inline void outb(uintptr_t addr, uint8_t  data) { *(volatile uint8_t  *)addr = data; }
 static inline void outw(uintptr_t addr, uint16_t data) { *(volatile uint16_t *)addr = data; }
 static inline void outl(uintptr_t addr, uint32_t data) { *(volatile uint32_t *)addr = data; }
+
+int  kbd_key(){return inl(KEY);}	
+int* vga_pixels(){return inl(VGA_INFO);}
+
+//fpga.h
+void putstr(char* str);
+void putch(char ch);
+void vga_init(void);
