@@ -22,5 +22,5 @@ void func_fib(char *argv[]){
 void func_time(char *argv[]){
     if(strcmp(argv[0], "time") != 0){printf("don't match!\n"); return;}
     if(argv[1] != NULL){printf("Too many Arguments!\n"); return;}
-    printf("Now time is %dms\n", get_time_ms()); return;
+    printf("Now time is %dms\n", clk_ms()); return;
 }
