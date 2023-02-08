@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "stddef.h": "c",
+        "stdarg.h": "c",
+        "__stddef_max_align_t.h": "c"
+    }
+}

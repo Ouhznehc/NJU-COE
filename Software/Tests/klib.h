@@ -42,28 +42,28 @@
 
 char dog_animation[] = "                       tt                         tij                                       i..t                      tj...t                                     t....t                    t......j                                    t.......t              t...,,,,,..j                                   t......tttttjtttttttj t...,,,,,,..t                                   t..ttt;..............i...,,,,,,,..t                                 tj............................,,,..t                                t....................................t                               t,..    ...............      .........t                              t.         ...........          ........t,                           j ::::::::::. ....... .::::::::::  .......t                           f;         ,#ff.....Lf          #Kf.......i                          f          #####f...f          f####f.......t                         f          #####L...i           ####L.......t                         L,         ,###f.....f          ####f.......t                          LfLLLLLLLLLLff;......fLLLLLLLLLLLLf........t                          t..........................................j                          t.........fffffff..........................j                          t....     fffffff      ....................j                          j..        fffff            ...............t                         t            fff       L                    :                         j        ff ffffL     Lf                    t                         ;i        fff  fffLfffL                    j                           t               fffL                     t                             t                                     j                                 tt                                t                                    :t                            tt                                         jtj                   ttj                                                 jttj.          jttj                                                       :jtttttttt.                              ";
 
-// string.h
-void  *memset    (void *s, int c, size_t n);
-void  *memcpy    (void *dst, const void *src, size_t n);
-void  *memmove   (void *dst, const void *src, size_t n);
-int    memcmp    (const void *s1, const void *s2, size_t n);
-size_t strlen    (const char *s);
-char  *strcat    (char *dst, const char *src);
-char  *strcpy    (char *dst, const char *src);
-char  *strncpy   (char *dst, const char *src, size_t n);
-int    strcmp    (const char *s1, const char *s2);
-int    strncmp   (const char *s1, const char *s2, size_t n);
+// // string.h
+// void  *memset    (void *s, int c, size_t n);
+// void  *memcpy    (void *dst, const void *src, size_t n);
+// void  *memmove   (void *dst, const void *src, size_t n);
+// int    memcmp    (const void *s1, const void *s2, size_t n);
+// size_t strlen    (const char *s);
+// char  *strcat    (char *dst, const char *src);
+// char  *strcpy    (char *dst, const char *src);
+// char  *strncpy   (char *dst, const char *src, size_t n);
+// int    strcmp    (const char *s1, const char *s2);
+// int    strncmp   (const char *s1, const char *s2, size_t n);
 
-// stdlib.h
-void   srand     (unsigned int seed);
-int    rand      (void);
-int    abs       (int x);
-int    atoi      (const char *nptr);
+// // stdlib.h
+// void   srand     (unsigned int seed);
+// int    rand      (void);
+// int    abs       (int x);
+// int    atoi      (const char *nptr);
 
-// stdio.h
-int    printf    (const char *format, ...);
-int    sprintf   (char *str, const char *format, ...);
-int    vsprintf  (char *str, const char *format, va_list ap);
+// // stdio.h
+// int    printf    (const char *format, ...);
+// int    sprintf   (char *str, const char *format, ...);
+// int    vsprintf  (char *str, const char *format, va_list ap);
 
 //device.h
 static inline uint8_t  inb(uintptr_t addr) { return *(volatile uint8_t  *)addr; }
