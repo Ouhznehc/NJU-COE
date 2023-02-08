@@ -45,7 +45,6 @@ module Top(
 (*KEEP = "TRUE"*) wire MemWe;
 (*KEEP = "TRUE"*) reg [31:0] errno = 32'b0;
 
-
 (*KEEP = "TRUE"*) reg reset, initialed;
 (*KEEP = "TRUE"*) wire [31:0] pc;
 (*KEEP = "TRUE"*) wire clk, dmemrdclk, imemclk, dmemwrclk;
