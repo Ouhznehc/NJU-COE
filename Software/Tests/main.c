@@ -1,4 +1,3 @@
-#include "fpga.h"
 #include "klib.h"
 int main();
 
