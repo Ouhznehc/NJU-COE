@@ -78,4 +78,10 @@ void func_hello (char *argv[]);
 void func_fib   (char *argv[]);
 void func_time  (char *argv[]);
 
+//mul.h
+unsigned int __mulsi3(unsigned int a, unsigned int b);
+unsigned int __umodsi3(unsigned int a, unsigned int b);
+unsigned int __udivsi3(unsigned int a, unsigned int b);
+
+
 #endif
